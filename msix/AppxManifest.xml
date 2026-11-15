@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Microsoft Store 제출용 매니페스트 템플릿. {{VERSION}} 은 scripts/build-msix.ps1 이 채운다.
+     Identity / Publisher 값은 Partner Center > 제품 ID 페이지의 값과 정확히 일치해야 한다. -->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:desktop="http://schemas.microsoft.com/appx/manifest/desktop/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  IgnorableNamespaces="uap uap3 desktop rescap">
+
+  <Identity
+    Name="JohnnyStudio.SpaceSenseAI"
+    Publisher="CN=FF44B3F5-BADB-4BBA-9A7C-B4F6B3D0DFA2"
+    Version="{{VERSION}}"
+    ProcessorArchitecture="x64" />
+
+  <Properties>
+    <DisplayName>SpaceSense AI</DisplayName>
+    <PublisherDisplayName>JohnnyStudio</PublisherDisplayName>
+    <Logo>Assets\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <!-- allowElevation 은 Windows 10 1809(17763) 이상에서 지원된다. -->
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.17763.0" MaxVersionTested="10.0.26100.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="ko-KR" />
+  </Resources>
+
+  <Applications>
+    <Application Id="App" Executable="spacesense-ai.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="SpaceSense AI"
+        Description="실시간 트리맵과 AI 어드바이저로 디스크 공간을 분석하고 정리합니다."
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\Square150x150Logo.png"
+        Square44x44Logo="Assets\Square44x44Logo.png">
+        <uap:DefaultTile
+          Wide310x150Logo="Assets\Wide310x150Logo.png"
+          Square71x71Logo="Assets\Square71x71Logo.png"
+          Square310x310Logo="Assets\Square310x310Logo.png" />
+      </uap:VisualElements>
+      <Extensions>
+        <!-- 터미널에서 spacesense-ai 명령(scan 인자 포함)으로 실행할 수 있게 한다. -->
+        <uap3:Extension Category="windows.appExecutionAlias" Executable="spacesense-ai.exe" EntryPoint="Windows.FullTrustApplication">
+          <uap3:AppExecutionAlias>
+            <desktop:ExecutionAlias Alias="spacesense-ai.exe" />
+          </uap3:AppExecutionAlias>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <rescap:Capability Name="runFullTrust" />
+    <!-- "관리자 권한으로 다시 시작" 및 DISM/powercfg 정리 명령의 UAC 승격에 필요 -->
+    <rescap:Capability Name="allowElevation" />
+  </Capabilities>
+</Package>
